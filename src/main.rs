@@ -48,8 +48,8 @@ impl TrimArgs {
 struct TableArgs {
     /// The reference flute length in millimeters
     pub length: f64,
-    /// Number of semitones above and below the reference (default: 12)
-    #[arg(short, long, default_value_t = 12)]
+    /// Number of semitones above and below the reference
+    #[arg(short, long, default_value_t = 6)]
     pub semitones: u32,
 }
 
@@ -97,17 +97,15 @@ fn cmd_table(args: TableArgs) {
     }
 
     let n = args.semitones as i32;
-    println!(
-        "{:<10} {:<12} {:<12} {:<10}",
-        "Semitone", "Cents", "Length (mm)", "Difference"
-    );
-    println!("{:-<10} {:-<12} {:-<12} {:-<10}", "", "", "", "");
+    println!("{:<12} {:<12}", "Semitone", "Length (mm)");
+    println!("{:-<12} {:-<12}", "", "");
 
     for s in -n..=n {
         let cents = s as f64 * 100.0;
         let length = args.length * (2.0f64.powf(-cents / 1200.0));
-        let diff = length - args.length;
-        println!("{:<10} {:<12.0} {:<12.2} {:>+10.2}", s, cents, length, diff);
+        // let diff = length - args.length;
+        // println!("{:<10} {:<12.0} {:<12.2} {:>+10.2}", s, cents, length);
+        println!("{:<12} {:<12.2}", s, length);
     }
 }
 
